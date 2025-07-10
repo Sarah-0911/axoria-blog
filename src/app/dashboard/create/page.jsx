@@ -5,9 +5,9 @@ export default function page() {
     e.preventDefault();
     const formData = new FormData(e.target);
 
-    // for (const [key, value] of formData.entries()) {
-    //   console.log(key, value);
-    // }
+    for (const [key, value] of formData.entries()) {
+      console.log(key, value);
+    }
   }
 
   return (
