@@ -3,7 +3,7 @@ import Link from "next/link";
 export default function Navbar() {
   return (
     <nav className="fixed w-full bg-slate-50 border-b border-zinc-300">
-      <div className="max-w-6xl mx-auto flex py-4 px-12 gap-4 text-zinc-900">
+      <div className="u-main-container flex py-4 gap-4 text-zinc-900">
         <Link href="/">AXORIA</Link>
         <Link href="/categories" className="mr-auto">Categories</Link>
         <Link href="/dashboard/create">Add an article</Link>
