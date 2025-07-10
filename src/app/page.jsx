@@ -1,4 +1,5 @@
 import PostListClient from "@/components/PostListClient";
+import { connectToDB } from "@/lib/utils/db/connectToDB";
 
 const posts = [
   {
@@ -20,6 +21,9 @@ const isoDate = now.toISOString();
 const readableDate = now.toLocaleDateString("en-EN", {year: "numeric", month: "long", day: "numeric"});
 
 export default async function Home() {
+
+  await connectToDB();
+
   return (
     <div className="u-main-container u-padding-content-container">
       <h1 className="t-main-title">Stay up to date with AXORIA.</h1>

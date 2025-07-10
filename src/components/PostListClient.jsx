@@ -6,7 +6,7 @@ export default function PostListClient({ posts, isoDate, readableDate }) {
   return (
     <ul className="u-articles-grid">
         {posts.map((post, id) => (
-          <li className="rounded-sm shadow-md border hover:shadow-xl hover:border hover:border-zinc-300">
+          <li key={id} className="rounded-sm shadow-md border hover:shadow-xl hover:border hover:border-zinc-300">
             <div className="pt-5 px-5 pb-7">
               <div className=" flex items-baseline gap-x-4 text-xs">
                 <time
