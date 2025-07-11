@@ -1,5 +1,6 @@
 // 🔹 Méthode serveur (pas une server action, donc pas besoin de "use server")
-// ↳ Sert à récupérer un article depuis la base en fonction de son slug
+// ↳ getPost: récupère un article depuis la base en fonction de son slug.
+// ↳ getPosts: récupére tous les articles depuis la base.
 
 import { connectToDB } from "@/lib/utils/db/connectToDB"
 import { Post } from "@/lib/models/post";
@@ -20,7 +21,7 @@ export const getPost = async(slug) => {
 export const getPosts = async() => {
   try {
     await connectToDB();
-    
+
     const rawPosts = await Post.find({}).lean();
 
     // 🔧 Convertir les ObjectId et dates pour qu'ils soient "prop-safe"

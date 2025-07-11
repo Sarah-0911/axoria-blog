@@ -30,3 +30,7 @@ export async function addPost (formData) {
     throw new Error(error.message || "An error occurred while creating the post")
   }
 }
+
+export async function addTag (tag) {
+
+}
