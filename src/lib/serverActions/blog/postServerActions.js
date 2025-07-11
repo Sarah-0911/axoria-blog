@@ -16,7 +16,7 @@ export async function addPost (formData) {
       markdownArticle
     });
 
-     // 🔹 On sauvegarde le post dans la base (l'ODM transforme l'objet JS → document MongoDB)
+    // 🔹 On sauvegarde le post dans la base (l'ODM transforme l'objet JS → doc MongoDB + déclenche les middlewares)
     const savedPost = await newPost.save();
     console.log("Post saved with success");
 
