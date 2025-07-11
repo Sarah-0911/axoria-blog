@@ -16,15 +16,15 @@ export default function PostListClient({ posts, isoDate, readableDate }) {
                   {readableDate}
                 </time>
                 <Link
-                href={`/categories/author/${post.author}`}
+                href={"/categories/author/johndoe"}
                 className="ml-auto text-base text-gray-700 hover:text-gray-600 whitespace-nowrap truncate"
                 >
-                  {post.author}
+                  John Doe
                 </Link>
               </div>
               <div className="">
                 <Link
-                href={`/article/${post.title}`}
+                href={`/article/${post.slug}`}
                 className="inline-block mt-6 text-xl font-semibold text-zinc-800 hover:text-zinc-600"
                 >
                   {post.title}

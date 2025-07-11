@@ -17,6 +17,28 @@ export const getPost = async(slug) => {
   }
 }
 
+export const getPosts = async() => {
+  try {
+    await connectToDB();
+    
+    const rawPosts = await Post.find({}).lean();
+
+    // 🔧 Convertir les ObjectId et dates pour qu'ils soient "prop-safe"
+    const posts = rawPosts.map(post => ({
+      ...post,
+      _id: post._id.toString(),
+      createdAt: post.createdAt?.toString(),
+      updatedAt: post.updatedAt?.toString(),
+    }));
+
+    return posts;
+
+  } catch (error) {
+    console.error("Error while fetching the posts", error);
+    throw new Error("failed to fetch posts");
+  }
+}
+
 
 // ✅ Toujours appeler connectToDB() dans chaque fonction serveur avant d’accéder à la DB.
 // ↳ car chaque appel serveur est indépendant.
