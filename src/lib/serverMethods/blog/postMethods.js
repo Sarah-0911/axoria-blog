@@ -30,6 +30,7 @@ export const getPosts = async() => {
       _id: post._id.toString(),
       createdAt: post.createdAt?.toString(),
       updatedAt: post.updatedAt?.toString(),
+      tags: post.tags?.map(tagId => tagId.toString() || [])
     }));
 
     return posts;
