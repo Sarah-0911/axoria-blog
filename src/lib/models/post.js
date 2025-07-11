@@ -14,7 +14,11 @@ const postSchema = new mongoose.Schema({
   slug: {
     type: String,
     unique: true   // chaque slug doit être unique pour éviter les conflits d'URL
-  }
+  },
+  tags: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Tag"  // dit à Mongoose de faire le lien avec le modèle Tag
+  }]
 }, {timestamps: true})   // ajoute automatiquement createdAt et updatedAt
 
 

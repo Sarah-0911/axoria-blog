@@ -4,12 +4,15 @@ import { useState, useRef } from "react";
 
 export default function page() {
 
-  const [tags, setTags] = useState(["css", "javascript"]);
+  const [tags, setTags] = useState([]);
   const tagInputRef = useRef(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
+
+    // 🔹 Ajoute/maj une entrée "tags" dans le FormData (en la convertissant en JSON pour envoi correct vers le serveur)
+    formData.set("tags", JSON.stringify(tags));
 
     for (const [key, value] of formData.entries()) {
       console.log(key, value);

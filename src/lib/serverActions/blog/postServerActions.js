@@ -1,19 +1,42 @@
 "use server"
 import { Post } from "@/lib/models/post";
+import { Tag } from "@/lib/models/tag";
 import { connectToDB } from "@/lib/utils/db/connectToDB";
+import slugify from "slugify";
 
 export async function addPost (formData) {
-  // 🔹 On extrait les champs du formulaire (title, markdownArticle)
-  const {title, markdownArticle } = Object.fromEntries(formData);
+  // 🔹 Extraction des données du formulaire
+  const {title, markdownArticle, tags } = Object.fromEntries(formData);
 
   try {
-    // 🔹 On se connecte à la base de données (ou on réutilise une connexion existante)
+    // 🔹 Connexion à la base (ou réutilisation si déjà ouverte)
     await connectToDB();
 
-    // 🔹 On crée une nouvelle instance de Post avec les données du formulaire
+    // 🔹 Gestion des tags
+    const tagNameArray = JSON.parse(tags); // convertit la string JSON '["css","react"]' en tableau JS ["css", "react"]
+
+    // Promise.all + map + async : attend que tous les tags soient trouvés ou créés.
+    const tagIds = await Promise.all(tagNameArray.map(async (tagName) => {
+      const normalizedTagName = tagName.trim().toLowerCase(); // normalise le nom
+      let tag = await Tag.findOne({name: normalizedTagName})  // regarde si ce tag existe déjà
+
+      // on en créé un si il n'existait pas de base
+      if (!tag) {
+        tag = await Tag.create({
+          name: normalizedTagName,
+          slug: slugify(normalizedTagName, { strict: true })
+        });
+      }
+
+      return tag._id; // retourne l’ID MongoDB du tag (pour lier au post)
+    }))
+
+
+    // 🔹 Création du nouveau Post avec ses tags associés (via leurs IDs)
     const newPost = new Post({
       title,
-      markdownArticle
+      markdownArticle,
+      tags: tagIds // utilisé une fois que le tableau de Promise.all est terminé
     });
 
     // 🔹 On sauvegarde le post dans la base (l'ODM transforme l'objet JS → doc MongoDB + déclenche les middlewares)
@@ -29,8 +52,4 @@ export async function addPost (formData) {
     console.error("Error while creating the post:", error);
     throw new Error(error.message || "An error occurred while creating the post")
   }
-}
-
-export async function addTag (tag) {
-
 }
