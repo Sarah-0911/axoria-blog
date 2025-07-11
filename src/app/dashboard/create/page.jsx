@@ -5,8 +5,7 @@ import { useState, useRef } from "react";
 export default function page() {
 
   const [tags, setTags] = useState(["css", "javascript"]);
-  const tagInputRef = useRef();
-  console.log(tagInputRef.current);
+  const tagInputRef = useRef(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -20,12 +19,25 @@ export default function page() {
     console.log(result);
   }
 
-  const handleAddTag = () => {
+  const handleAddTag = (e) => {
+    e.preventDefault();
+    const newTag = tagInputRef.current.value.trim().toLowerCase();
 
+    if (newTag !== "" && !tags.includes(newTag) && tags.length <= 4) {
+      setTags(prevTags => [...prevTags, newTag]);
+      tagInputRef.current.value = "";
+    }
   }
 
-  const handleRemoveTag = (currentTag) => {
+  const handleEnterOnTagInput = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      handleAddTag(e);
+    }
+  }
 
+  const handleRemoveTag = (tagToRemove) => {
+    setTags(prevTags => prevTags.filter(tag => tag !== tagToRemove));
   }
 
   return (
@@ -52,11 +64,12 @@ export default function page() {
             className="shadow border rounded p-3 text-gray-700 focus:outline-slate-400"
             id="tag"
             placeholder="Add a tag"
+            onKeyDown={handleEnterOnTagInput}
             />
             <button
             className="bg-indigo-500 hover:bg-indigo-700 p-4 text-white font-bold rounded"
             onClick={handleAddTag}
-            type="button" // type spécifié car on est dans un formulaire et dc submit par défaut (ms pas ce qu'on veut ici)
+            type="button" // évite le submit par défaut d'un bouton ds un formulaire (on veut juste gérer l'ajout de tag ici)
             >
               Add
             </button>
