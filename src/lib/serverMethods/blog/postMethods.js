@@ -4,12 +4,17 @@
 
 import { connectToDB } from "@/lib/utils/db/connectToDB"
 import { Post } from "@/lib/models/post";
+import { Tag } from "@/lib/models/tag";
 
 export const getPost = async(slug) => {
   try {
     await connectToDB();   // Connexion (ou réutilisation) à la DB
 
-    const post = await Post.findOne({slug});  // Récupère l'article correspondant au slug
+    // Récupère l'article correspondant au slug + les tags associés
+    const post = await Post.findOne({slug}).populate({
+      path: "tags",
+      select: "name slug"  // sélectionne les champs name et slug des tags
+    });
     return post;
 
   } catch (error) {

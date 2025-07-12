@@ -1,4 +1,5 @@
 import { getPost } from "@/lib/serverMethods/blog/postMethods"
+import Link from "next/link"
 
 export default async function page({ params }) {
 
@@ -9,6 +10,17 @@ export default async function page({ params }) {
   return (
     <section className="u-main-container u-padding-content-container">
       <h1 className="text-4xl mb-3">{post.title}</h1>
+      <div className="mb-6 flex gap-4">
+        {post.tags.map(tag => (
+          <Link 
+          key={tag.slug}
+          className="text-sm text-gray-500 underline" 
+          href={`/categories/tag/${tag.slug}`}
+          >
+            #{tag.name}
+          </Link>
+        ))}
+      </div>
       <p>{post.markdownArticle}</p>
     </section>
   )
