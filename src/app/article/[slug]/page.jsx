@@ -1,5 +1,6 @@
 import { getPost } from "@/lib/serverMethods/blog/postMethods"
 import Link from "next/link"
+import "./article-styles.css"
 
 export default async function page({ params }) {
 
@@ -26,8 +27,6 @@ export default async function page({ params }) {
       dangerouslySetInnerHTML={{ __html: post.markdownHTMLResult }}
       >
       </div>
-
-
     </section>
   )
 }
