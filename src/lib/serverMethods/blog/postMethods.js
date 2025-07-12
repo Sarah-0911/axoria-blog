@@ -4,7 +4,6 @@
 
 import { connectToDB } from "@/lib/utils/db/connectToDB"
 import { Post } from "@/lib/models/post";
-import { Tag } from "@/lib/models/tag";
 
 export const getPost = async(slug) => {
   try {

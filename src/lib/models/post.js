@@ -11,6 +11,10 @@ const postSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  markdownHTMLResult: {
+    type: String,
+    required: true
+  },
   slug: {
     type: String,
     unique: true   // chaque slug doit être unique pour éviter les conflits d'URL

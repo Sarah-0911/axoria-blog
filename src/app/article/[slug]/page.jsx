@@ -21,7 +21,13 @@ export default async function page({ params }) {
           </Link>
         ))}
       </div>
-      <p>{post.markdownArticle}</p>
+      <div
+      className="article-styles"
+      dangerouslySetInnerHTML={{ __html: post.markdownHTMLResult }}
+      >
+      </div>
+
+
     </section>
   )
 }

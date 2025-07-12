@@ -3,6 +3,9 @@ import { Post } from "@/lib/models/post";
 import { Tag } from "@/lib/models/tag";
 import { connectToDB } from "@/lib/utils/db/connectToDB";
 import slugify from "slugify";
+import { marked } from "marked";
+import { jsdom } from "jsdom";
+import createDOMPurify from "dompurify";
 
 export async function addPost (formData) {
   // 🔹 Extraction des données du formulaire
@@ -31,11 +34,14 @@ export async function addPost (formData) {
       return tag._id; // retourne l’ID MongoDB du tag (pour lier au post)
     }))
 
+    // 🔹 Générer le HTML à partir du markdown
+    let markdownHTMLResult = marked(markdownArticle);
 
     // 🔹 Création du nouveau Post avec ses tags associés (via leurs IDs)
     const newPost = new Post({
       title,
       markdownArticle,
+      markdownHTMLResult,
       tags: tagIds // utilisé une fois que le tableau de Promise.all est terminé
     });
 
