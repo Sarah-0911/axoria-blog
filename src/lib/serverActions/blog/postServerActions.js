@@ -4,12 +4,15 @@ import { Tag } from "@/lib/models/tag";
 import { connectToDB } from "@/lib/utils/db/connectToDB";
 import slugify from "slugify";
 import { marked } from "marked";
-import { jsdom } from "jsdom";
+import { JSDOM } from "jsdom";
 import createDOMPurify from "dompurify";
+
+const window = new JSDOM("").window;
+const DOMPurify = createDOMPurify(window);
 
 export async function addPost (formData) {
   // 🔹 Extraction des données du formulaire
-  const {title, markdownArticle, tags } = Object.fromEntries(formData);
+  const { title, markdownArticle, tags } = Object.fromEntries(formData);
 
   try {
     // 🔹 Connexion à la base (ou réutilisation si déjà ouverte)
@@ -34,8 +37,9 @@ export async function addPost (formData) {
       return tag._id; // retourne l’ID MongoDB du tag (pour lier au post)
     }))
 
-    // 🔹 Générer le HTML à partir du markdown
+    // 🔹 Générer le HTML à partir du markdown et le nettoyer de potentiels scripts malicieux
     let markdownHTMLResult = marked(markdownArticle);
+    markdownHTMLResult = DOMPurify.sanitize(markdownHTMLResult);
 
     // 🔹 Création du nouveau Post avec ses tags associés (via leurs IDs)
     const newPost = new Post({
