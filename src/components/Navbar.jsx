@@ -7,6 +7,8 @@ export default function Navbar() {
         <Link href="/">AXORIA</Link>
         <Link href="/categories" className="mr-auto">Categories</Link>
         <Link href="/dashboard/create">Add an article</Link>
+        <Link href="/signin">Sign in</Link>
+        <Link href="/signup">Sign up</Link>
       </div>
     </nav>
   )

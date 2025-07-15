@@ -14,9 +14,9 @@ export default async function page({ params }) {
       <h1 className="text-4xl mb-3">{post.title}</h1>
       <div className="mb-6 flex gap-4">
         {post.tags.map(tag => (
-          <Link 
+          <Link
           key={tag.slug}
-          className="text-sm text-gray-500 underline" 
+          className="text-sm text-gray-500 underline"
           href={`/categories/tag/${tag.slug}`}
           >
             #{tag.name}
@@ -35,4 +35,3 @@ export default async function page({ params }) {
 // 🔹 Quand Next.js rend la page /article/[slug], il extrait automatiquement la partie dynamique de l'URL dans l'objet params
 //    ex: /article/5-css-tricks → params.slug = "5-css-tricks"
 //    On utilise ce slug pour récupérer le bon post dans la base de données
-
