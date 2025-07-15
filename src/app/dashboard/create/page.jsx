@@ -1,11 +1,16 @@
 "use client"
 import { addPost } from "@/lib/serverActions/blog/postServerActions";
 import { useState, useRef } from "react";
+import { useRouter } from "next/navigation";
 
 export default function page() {
-
   const [tags, setTags] = useState([]);
+
+  const router = useRouter();
+
   const tagInputRef = useRef(null);
+  const submitButtonRef = useRef(null);
+  const serverValidationText = useRef(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -18,8 +23,33 @@ export default function page() {
       console.log(key, value);
     }
 
-    const result = await addPost(formData);
-    console.log(result);
+    serverValidationText.current.textContent = "";
+    submitButtonRef.current.textContent = "Saving Post...";
+    submitButtonRef.current.disabled = true;
+
+    try {
+      const result = await addPost(formData);
+
+      if (result.success) {
+        submitButtonRef.current.textContent = "Post Saved ✅"
+        let countDown = 3;
+        serverValidationText.current.textContent = `Redirecting in ${countDown}...`;
+
+        const intervalId = setInterval(() => {
+          countDown --;
+          serverValidationText.current.textContent = `Redirecting in ${countDown}...`;
+          if (countDown === 0) {
+            clearInterval(intervalId);
+            router.push(`/article/${result.slug}`)
+          }
+        }, 1000);
+      }  
+    } 
+    catch (error) {
+      submitButtonRef.current.textContent = "Submit";
+      serverValidationText.current.textContent = `${error.message}`;
+      submitButtonRef.current.disabled = false;
+    }
   }
 
   const handleAddTag = (e) => {
@@ -115,10 +145,12 @@ export default function page() {
         </textarea>
 
         <button
+        ref={submitButtonRef}
         className="min-w-44 bg-indigo-500 hover:bg-indigo-700 text-white font-bold p-3 rounded border-none mb-4"
         >
           Submit
         </button>
+        <p ref={serverValidationText}></p>
       </form>
     </section>
   )
