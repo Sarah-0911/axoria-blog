@@ -43,6 +43,14 @@ export async function addPost (formData) {
       return tag._id; // retourne l’ID MongoDB du tag (pour lier au post)
     }))
 
+    // 🔹 Gestion du marked highlight
+    marked.use(markedHighlight({
+      highlight(code, lang) {
+        const validLanguage = Prism.languages[lang] ? lang : "plaintext";
+        return Prism.highlight(code, Prism.languages[validLanguage], validLanguage);
+      }
+    }));
+
     // 🔹 Générer le HTML à partir du markdown et le nettoyer de potentiels scripts malicieux
     let markdownHTMLResult = marked(markdownArticle);
     markdownHTMLResult = DOMPurify.sanitize(markdownHTMLResult);
