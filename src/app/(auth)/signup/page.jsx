@@ -46,8 +46,8 @@ export default function page() {
 
   return (
     <form
-    className="max-w-md mx-auto mt-28"
     onSubmit={handleSubmit}
+    className="max-w-md mx-auto mt-28"
     >
       <label htmlFor="userName" className="f-label">
         Name or pseudo
