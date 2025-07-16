@@ -1,7 +1,8 @@
+"use server"
 import { connectToDB } from "@/lib/utils/db/connectToDB";
 import { User } from "@/lib/models/user";
 import slugify from "slugify";
-import bcrypt from "bcryptjs/dist/bcrypt";
+import bcrypt from "bcryptjs";
 
 export async function register (formData) {
     const { userName, email, password, passwordConfirm } = Object.fromEntries(formData);
@@ -38,7 +39,7 @@ export async function register (formData) {
 
         console.log("User saved to db");
         
-        return { success: true }
+        return { success: true };
 
     } catch (error) {
         console.log("Error while signing up the user:", error)
