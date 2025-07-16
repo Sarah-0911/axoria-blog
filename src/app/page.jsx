@@ -2,21 +2,6 @@ import PostListClient from "@/components/PostListClient";
 import { connectToDB } from "@/lib/utils/db/connectToDB";
 import { getPosts } from "@/lib/serverMethods/blog/postMethods";
 
-// const posts = [
-//   {
-//     author: "John Doe",
-//     title: "5 CSS tricks",
-//   },
-//   {
-//     author: "Victor Wallace",
-//     title: "How to code a navbar",
-//   },
-//   {
-//     author: "Bruce Willis",
-//     title: "How to setup TypeScript",
-//   },
-// ]
-
 const now = new Date();
 const isoDate = now.toISOString();
 const readableDate = now.toLocaleDateString("en-EN", {year: "numeric", month: "long", day: "numeric"});

@@ -43,8 +43,8 @@ export default function page() {
             router.push(`/article/${result.slug}`)
           }
         }, 1000);
-      }  
-    } 
+      }
+    }
     catch (error) {
       submitButtonRef.current.textContent = "Submit";
       serverValidationText.current.textContent = `${error.message}`;
