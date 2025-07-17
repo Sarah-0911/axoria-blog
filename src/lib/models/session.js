@@ -20,14 +20,29 @@ export const Session = mongoose.models?.Session || mongoose.model("Session", ses
 
 
 /*
-🔐 Session = prouve qu’un user est connecté.
+🔐 Session vs User
 
-- Contient juste un lien vers l’utilisateur (userId).
-- Ex : voir qui est connecté, sécuriser une page.
+- Session = prouve que l’utilisateur est connecté (temporaire, expire)
+- User = infos persistantes du compte (nom, email, rôle…)
 
-🧠 Ne stocke pas les infos du user directement.
+📌 Une session contient juste un lien vers un User (via userId)
+   → Pas d'infos directement dans la session
 
-User = les infos du compte
-Session = l’état "connecté"
+🔁 Relation :
+- 1 User → peut avoir plusieurs Sessions (ordi, téléphone…)
+- 1 Session → appartient à 1 seul User
+
+🚫 On ne met PAS une session dans le userSchema
+   → Sinon : 1 seule session possible par user
+
+👮‍♂️ Rôle (ex: isAdmin) :
+- Stocké dans le User
+- Pour le vérifier, il faut d’abord une session valide :
+    if (session && session.user.isAdmin) { ... }
+
+🧭 Ex :
+User
+ ├─ Session #1 (Chrome - maison)
+ ├─ Session #2 (Safari - iPhone)
+ └─ Session #3 (Edge - travail)
 */
-
