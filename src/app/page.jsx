@@ -7,11 +7,7 @@ const isoDate = now.toISOString();
 const readableDate = now.toLocaleDateString("en-EN", {year: "numeric", month: "long", day: "numeric"});
 
 export default async function Home() {
-
-  await connectToDB();
-
   const posts = await getPosts();
-
 
   return (
     <div className="u-main-container u-padding-content-container">
