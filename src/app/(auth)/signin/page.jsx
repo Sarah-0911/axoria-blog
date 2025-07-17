@@ -1,14 +1,35 @@
 "use client"
 import { useRouter } from "next/navigation";
 import { useRef } from "react";
+import { login } from "@/lib/serverActions/session/sessionServerActions";
+import { Router } from "next/router";
 
 export default function page() {
 
   const serverInfoRef = useRef(null);
   const submitButtonRef = useRef(null);
 
-  const handleSubmit = () => {
-    e.preventDefault()
+  const router = useRouter();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    serverInfoRef.current.textContent = "";
+    submitButtonRef.current.disabled = true;
+
+    try {
+      const result = await login(new FormData(e.target));
+
+      if (result.success) {
+        router.push("/");
+      }
+
+    } catch (error) {
+      console.error("Error during login:", error);
+      submitButtonRef.current.textContent = "Submit";
+      serverInfoRef.current.textContent = error.message;
+      submitButtonRef.current.disabled = false;
+    }
   }
 
   return (

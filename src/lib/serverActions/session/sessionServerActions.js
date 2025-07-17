@@ -75,7 +75,6 @@ export async function login (formData) {
         else {
             session = new Session({
                 userId: user._id,
-                createdAt,
                 expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
             }) 
             await session.save();
@@ -92,7 +91,6 @@ export async function login (formData) {
             sameSite: "Lax", // protège contre les attaques CSRF simples
         })
 
-        console.log("Session saved to db");
         return { success: true };
 
  

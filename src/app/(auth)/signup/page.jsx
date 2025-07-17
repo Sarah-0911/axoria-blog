@@ -1,7 +1,7 @@
 "use client"
-import { register } from "@/lib/serverActions/session/sessionServerActions";
-import { useRouter } from "next/navigation";
 import { useRef } from "react";
+import { useRouter } from "next/navigation";
+import { register } from "@/lib/serverActions/session/sessionServerActions";
 
 export default function page() {
 
@@ -39,7 +39,7 @@ export default function page() {
     }
     catch (error) {
       submitButtonRef.current.textContent = "Submit";
-      serverInfoRef.current.textContent = `${error.message}`;
+      serverInfoRef.current.textContent = error.message;
       submitButtonRef.current.disabled = false;
     }
   }
