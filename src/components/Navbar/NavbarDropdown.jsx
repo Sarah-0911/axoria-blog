@@ -15,6 +15,17 @@ export default function NavbarDropdown() {
     setIsOpen(!isOpen);
   }
 
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (!dropdownRef.current.contains(e.target)) setIsOpen(false);
+    }
+    document.addEventListener("click", handleClickOutside);
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    }
+    
+  }, [])
+
   const handleSignout = () => {
     // router.push("/");
   }
@@ -34,7 +45,8 @@ export default function NavbarDropdown() {
       {isOpen && (
         <ul className="absolute right-0 top-10 w-[250px] border-b border-x border-zinc-300">
           <li className="bg-slate-50 hover:bg-slate-200 border-b border-slate-200">
-            <Link 
+            <Link
+            onClick={() => setIsOpen(false)} 
             href="/dashboard"
             className="block px-4 py-3"
             >
