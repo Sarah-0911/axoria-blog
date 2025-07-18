@@ -3,7 +3,6 @@ import { User } from "@/lib/models/user";
 import { connectToDB } from "@/lib/utils/db/connectToDB";
 import { cookies } from "next/headers";
 
-
 export const sessionInfo = async() => {
     const cookieStore = await cookies();
 

@@ -4,6 +4,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { logout } from "@/lib/serverActions/session/sessionServerActions"
+import { isPrivatePage } from "@/lib/utils/auth/isPrivatePage"
 
 export default function NavbarDropdown() {
 
@@ -29,6 +30,11 @@ export default function NavbarDropdown() {
 
   const handleLogout = async () => {
     await logout();
+
+    const currentPath = window.location.pathname;
+    if (isPrivatePage(currentPath)) {
+      router.push("/signin");
+    }
   }
 
   return (

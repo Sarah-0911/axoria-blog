@@ -14,7 +14,6 @@ export async function connectToDB () {
   }
 }
 
-
 /*
 🧠 MONGOOSE MEMO — ODM pour MongoDB
 
