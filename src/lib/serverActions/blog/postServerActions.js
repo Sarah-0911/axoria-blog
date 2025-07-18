@@ -3,6 +3,8 @@ import { Post } from "@/lib/models/post";
 import { Tag } from "@/lib/models/tag";
 import { connectToDB } from "@/lib/utils/db/connectToDB";
 import slugify from "slugify";
+import AppError from "@/lib/utils/errorHandling/customError";
+import { sessionInfo } from "@/lib/serverMethods/session/sessionMethods";
 import { marked } from "marked";
 import { JSDOM } from "jsdom";
 import createDOMPurify from "dompurify";
@@ -21,12 +23,34 @@ export async function addPost (formData) {
   const { title, markdownArticle, tags } = Object.fromEntries(formData);
 
   try {
+
+    if(typeof title !== "string" || title.trim().length < 3) {
+      throw new AppError("Invalid data");
+    }
+
+    if(typeof markdownArticle !== "string" || markdownArticle.trim().length === 0) {
+      throw new AppError("Invalid data");
+    }
+
     // 🔹 Connexion à la base (ou réutilisation si déjà ouverte)
     await connectToDB();
 
-    // 🔹 Gestion des tags
-    const tagNameArray = JSON.parse(tags); // convertit la string JSON '["css","react"]' en tableau JS ["css", "react"]
+    const session = await sessionInfo();
+    if(!session.success) {
+      throw new AppError("Authentication required");
+    }
 
+    // 🔹 Gestion des tags
+    if(typeof tags !== "string") {
+      throw new AppError("Invalid data");
+    }
+
+    const tagNameArray = JSON.parse(tags); // convertit la string JSON '["css","react"]' en tableau JS ["css", "react"]
+    
+    if(!Array.isArray(tagNameArray)) {
+      throw new AppError("Tags must be a valid array");
+    }
+    
     // Promise.all + map + async : attend que tous les tags soient trouvés ou créés.
     const tagIds = await Promise.all(tagNameArray.map(async (tagName) => {
       const normalizedTagName = tagName.trim().toLowerCase(); // normalise le nom
@@ -74,6 +98,11 @@ export async function addPost (formData) {
 
   } catch (error) {
     console.error("Error while creating the post:", error);
-    throw new Error(error.message || "An error occurred while creating the post")
+
+    if (error instanceof AppError) {
+      throw error
+    }
+
+    throw new Error("An error occurred while creating the post");
   }
 }
