@@ -3,6 +3,7 @@ import { useRef, useState, useEffect } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
+import { logout } from "@/lib/serverActions/session/sessionServerActions"
 
 export default function NavbarDropdown() {
 
@@ -26,8 +27,8 @@ export default function NavbarDropdown() {
     
   }, [])
 
-  const handleSignout = () => {
-    // router.push("/");
+  const handleLogout = async () => {
+    await logout();
   }
 
   return (
@@ -55,7 +56,7 @@ export default function NavbarDropdown() {
           </li>
           <li className="bg-slate-50 hover:bg-slate-200">
             <button
-            onClick={handleSignout}
+            onClick={handleLogout}
             className="w-full px-4 py-3 text-left"
             >
               Sign out
